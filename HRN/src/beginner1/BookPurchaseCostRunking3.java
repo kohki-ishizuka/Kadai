@@ -26,7 +26,7 @@ public class BookPurchaseCostRunking3 {
 		for (int i = 0; i < empNum; i++) {
 			empNames[i] = sc.next();
 		}
-
+		
 		//③本の購入数の読み込み
 		int bookNum = sc.nextInt();
 
