@@ -14,15 +14,13 @@ public class HateNumber {
 		//①嫌いな数字を入力
 		String HNum = sc.next();
 		int n = Integer.parseInt(HNum);
-		if (n >= 1 && n <= 9) {
-		} else {
+		if (n < 0 || n > 9) {
 			System.out.println("無効な入力です");
 		}
 
 		//②病室の総数を入力
 		int RNum = sc.nextInt();
-		if (RNum >= 1 && RNum <= 100) {
-		} else {
+		if (RNum < 1 || RNum > 100) {
 			System.out.println("無効な入力です");
 		}
 
@@ -34,8 +32,7 @@ public class HateNumber {
 			String r = sc.next();
 			int b = Integer.parseInt(r);
 			preRoomNum.add(r);
-			if (b >= 1 && b <= 1000) {
-			} else {
+			if (b < 1 || b > 1000) {
 				System.out.println("無効な入力です");
 			}
 		}
@@ -49,7 +46,8 @@ public class HateNumber {
 		if (list.isEmpty()) {
 			System.out.println("none");
 		} else {
-			System.out.println(list);
+			for(String z:list)
+			System.out.println(z);
 		}
 		sc.close();
 	}
