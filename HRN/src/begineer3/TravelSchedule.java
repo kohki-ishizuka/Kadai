@@ -14,7 +14,7 @@ public class TravelSchedule {
 		int totalDays = sc.nextInt();
 		int travelDays = sc.nextInt();
 		if (totalDays < 1 || totalDays > 30 || travelDays < 1 || travelDays > 30 || totalDays < travelDays) {
-			System.out.println("無効な入力です");
+			System.out.println("休日の日数または旅行の日数の範囲外です");
 			return;
 		}
 
@@ -28,7 +28,7 @@ public class TravelSchedule {
 			int rainProbability = sc.nextInt();
 
 			if (date < 1 || date > 30 || rainProbability < 0 || rainProbability > 100) {
-				System.out.println("無効な入力です");
+				System.out.println("日付または降水確率の範囲外です");
 				return;
 			}
 
@@ -36,22 +36,27 @@ public class TravelSchedule {
 			rainProbabilities.add(rainProbability);
 		}
 
-		if (dates.size() != totalDays || dates.size() != rainProbabilities.size() || !consecutiveDates(dates)) {
-			System.out.println("無効な入力です");
+		if (dates.size() != totalDays || dates.size() != rainProbabilities.size() || !isConsecutiveDates(dates)) {
+			System.out.println("日付または降水確率の入力が足りていないか日付が連続していません");
 			return;
 
 		}
-		int[] minAvgRange = lowestAvgRange(rainProbabilities, travelDays);
 
-		if (minAvgRange != null) {
-			System.out.println(dates.get(minAvgRange[0]) + " " + dates.get(minAvgRange[1]));
+		int[] minAvgRange = getLowestAvgRange(rainProbabilities, travelDays);
+
+		if (!rainProbabilities.isEmpty() && travelDays <= rainProbabilities.size()) {
+			if (minAvgRange != null) {
+				System.out.println(dates.get(minAvgRange[0]) + " " + dates.get(minAvgRange[1]));
+			} else {
+				System.out.println("降水確率の平均が最も低い範囲を見つけられません");
+			}
 		} else {
-			System.out.println("無効な入力です");
+			System.out.println("降水確率の入力に誤りがあります");
 		}
 	}
 
 	//連続した日付をチェックするメソッド
-	public static boolean consecutiveDates(List<String> dates) {
+	public static boolean isConsecutiveDates(List<String> dates) {
 		if (dates.size() <= 1) {
 			return true;
 		}
@@ -68,26 +73,19 @@ public class TravelSchedule {
 	}
 
 	//降水確率の平均が最も低い旅行の日数分の日付範囲を取得するメソッド
-	public static int[] lowestAvgRange(List<Integer> rainProbabilities, int travelDays) {
-		if (rainProbabilities.isEmpty() || travelDays > rainProbabilities.size()) {
-			return null;
-		}
+	public static int[] getLowestAvgRange(List<Integer> rainProbabilities, int travelDays) {
 
 		int minAvgRangeStart = 0;
 		int minAvgRangeEnd = travelDays - 1;
 		int currentRangeStart = 0;
 		int currentRangeEnd = travelDays - 1;
 
-		int minAvg = calculateAvg(rainProbabilities, currentRangeStart, currentRangeEnd);
-		int currentAvg = minAvg;
+		int minAvg = getAvg(rainProbabilities, currentRangeStart, currentRangeEnd);
 
-		for (int i = travelDays; i < rainProbabilities.size(); i++) {
+		for (int i = 0; i < rainProbabilities.size() - travelDays; i++) {
 			currentRangeStart++;
 			currentRangeEnd++;
-
-			currentAvg = currentAvg - rainProbabilities.get(currentRangeStart - 1)
-					+ rainProbabilities.get(currentRangeEnd);
-
+			int currentAvg = getAvg(rainProbabilities, currentRangeStart, currentRangeEnd);
 			if (currentAvg < minAvg) {
 				minAvg = currentAvg;
 				minAvgRangeStart = currentRangeStart;
@@ -99,7 +97,7 @@ public class TravelSchedule {
 	}
 
 	//特定の範囲の降水確率の平均値を計算するメソッド
-	public static int calculateAvg(List<Integer> rainProbabilities, int start, int end) {
+	public static int getAvg(List<Integer> rainProbabilities, int start, int end) {
 		int sum = 0;
 		for (int i = start; i <= end; i++) {
 			sum += rainProbabilities.get(i);
