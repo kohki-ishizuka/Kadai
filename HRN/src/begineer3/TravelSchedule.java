@@ -21,6 +21,7 @@ public class TravelSchedule {
 			return;
 		} else if (totalDays < travelDays) {
 			System.out.println("旅行の日数は休日の日数より少なく入力してください");
+			return;
 		}
 
 		//日付と降水確率のリストを初期化
