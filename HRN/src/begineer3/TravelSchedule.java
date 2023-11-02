@@ -13,9 +13,14 @@ public class TravelSchedule {
 		//休日の日数と旅行の日数を入力
 		int totalDays = sc.nextInt();
 		int travelDays = sc.nextInt();
-		if (totalDays < 1 || totalDays > 30 || travelDays < 1 || travelDays > 30 || totalDays < travelDays) {
-			System.out.println("休日の日数または旅行の日数の範囲外です");
+		if (totalDays < 1 || totalDays > 30) {
+			System.out.println("休日の日数は1から30の間で入力してください");
 			return;
+		} else if (travelDays < 1 || travelDays > 30) {
+			System.out.println("旅行の日数は1から30の間で入力してください");
+			return;
+		} else if (totalDays < travelDays) {
+			System.out.println("旅行の日数は休日の日数より少なく入力してください");
 		}
 
 		//日付と降水確率のリストを初期化
@@ -27,8 +32,11 @@ public class TravelSchedule {
 			int date = sc.nextInt();
 			int rainProbability = sc.nextInt();
 
-			if (date < 1 || date > 30 || rainProbability < 0 || rainProbability > 100) {
-				System.out.println("日付または降水確率の範囲外です");
+			if (date < 1 || date > 30) {
+				System.out.println("日付は1から30の間で入力してください");
+				return;
+			} else if (rainProbability < 0 || rainProbability > 100) {
+				System.out.println("降水確率は1から100の間で入力してください");
 				return;
 			}
 
@@ -36,22 +44,22 @@ public class TravelSchedule {
 			rainProbabilities.add(rainProbability);
 		}
 
-		if (dates.size() != totalDays || dates.size() != rainProbabilities.size() || !isConsecutiveDates(dates)) {
-			System.out.println("日付または降水確率の入力が足りていないか日付が連続していません");
+		if (dates.size() != totalDays) {
+			System.out.println("日付の入力が不十分です");
 			return;
-
+		} else if (dates.size() != rainProbabilities.size()) {
+			System.out.println("降水確率の入力が不十分です");
+			return;
+		} else if (!isConsecutiveDates(dates)) {
+			System.out.println("日付が連続していません");
+			return;
 		}
 
-		int[] minAvgRange = getLowestAvgRange(rainProbabilities, travelDays);
-
 		if (!rainProbabilities.isEmpty() && travelDays <= rainProbabilities.size()) {
-			if (minAvgRange != null) {
-				System.out.println(dates.get(minAvgRange[0]) + " " + dates.get(minAvgRange[1]));
-			} else {
-				System.out.println("降水確率の平均が最も低い範囲を見つけられません");
-			}
+			int[] minAvgRange = getLowestAvgRange(rainProbabilities, travelDays);
+			System.out.println(dates.get(minAvgRange[0]) + " " + dates.get(minAvgRange[1]));
 		} else {
-			System.out.println("降水確率の入力に誤りがあります");
+			System.out.println("降水確率の平均が最も低い範囲を見つけられません");
 		}
 	}
 
