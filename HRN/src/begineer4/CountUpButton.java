@@ -25,7 +25,11 @@ public class CountUpButton {
 		//ボタンの作成
 		JButton button1 = new JButton("カウントアップ");
 		JButton button2 = new JButton("リセット");
-	
+
+		//ボタンをウィンドウに追加
+		frame.add(button1);
+		frame.add(button2);
+
 		//カウンターの作成
 		JLabel countLabel = new JLabel(count + "回");
 		frame.add(countLabel);
@@ -53,10 +57,7 @@ public class CountUpButton {
 			}
 		});
 
-		//ボタンをウィンドウに追加
-		frame.add(button1);
-		frame.add(button2);
-
-		frame.setVisible(true); // ウィンドウを表示
+		// ウィンドウを表示
+		frame.setVisible(true); 
 	}
 }
